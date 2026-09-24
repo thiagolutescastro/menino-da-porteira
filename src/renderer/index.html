@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+  <title>Hospedar Sistema Local Aberto</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="../../build/icon.png" alt="" class="brand-icon">
+      <span>Hospedar Sistema Local Aberto</span>
+    </div>
+    <div class="topbar-right">
+      <div id="account" class="account hidden">
+        <span id="account-avatar" class="avatar"></span>
+        <span class="account-text">
+          <span id="account-name" class="account-name"></span>
+          <span id="account-provider" class="account-provider"></span>
+        </span>
+        <button id="btn-logout" class="btn ghost small">Sair</button>
+      </div>
+      <button id="btn-settings" class="icon-btn" title="Configurações" aria-label="Configurações"></button>
+    </div>
+  </header>
+
+  <div id="banner" class="banner hidden" role="status">
+    <span id="banner-text"></span>
+    <button id="banner-update" class="btn small">Atualizar CLI</button>
+    <button id="banner-close" class="icon-btn small" aria-label="Fechar aviso"></button>
+  </div>
+
+  <main>
+    <!-- Carregando / verificando -->
+    <section id="screen-boot" class="screen center">
+      <div class="spinner big"></div>
+      <p id="boot-text" class="muted">Verificando devtunnel CLI...</p>
+    </section>
+
+    <!-- Instalação automática da CLI -->
+    <section id="screen-install" class="screen center hidden">
+      <div class="card">
+        <h1 id="install-title">Instalando devtunnel CLI...</h1>
+        <p id="install-message" class="muted">Isso acontece só na primeira vez.</p>
+        <div id="install-progress" class="progress indeterminate"><div class="bar"></div></div>
+        <pre id="install-log" class="log small-log"></pre>
+        <div id="install-error" class="hidden">
+          <div id="install-error-text" class="alert error"></div>
+          <p class="muted">Instale manualmente e clique em "Tentar novamente":</p>
+          <pre id="install-manual" class="code"></pre>
+          <div class="row-actions">
+            <button id="install-retry" class="btn primary">Tentar novamente</button>
+            <button id="install-pick" class="btn">Selecionar executável...</button>
+            <button id="install-docs" class="btn ghost">Documentação oficial</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Login -->
+    <section id="screen-login" class="screen center hidden">
+      <div class="card">
+        <h1>Entrar no Dev Tunnels</h1>
+        <p class="muted">O devtunnel precisa de uma conta Microsoft ou GitHub para criar túneis.</p>
+        <div id="login-error" class="alert error hidden"></div>
+        <div class="login-buttons">
+          <button id="login-microsoft" class="btn primary large">Entrar com Microsoft</button>
+          <button id="login-github" class="btn large">Entrar com GitHub</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Painel principal -->
+    <section id="screen-main" class="screen hidden">
+      <div class="panel-header">
+        <div class="tabs">
+          <span class="tab active">PORTAS <span id="count" class="count">0</span></span>
+        </div>
+        <button id="btn-add" class="btn primary"></button>
+      </div>
+
+      <form id="add-form" class="add-form hidden" autocomplete="off">
+        <label class="field">
+          <span>Porta local</span>
+          <input id="add-port" type="number" min="1" max="65535" placeholder="ex: 3000" required>
+        </label>
+        <label class="check">
+          <input id="add-public" type="checkbox">
+          <span>Público <span class="muted">(acesso sem login)</span></span>
+        </label>
+        <button type="submit" class="btn primary">Expor porta</button>
+        <button type="button" id="add-cancel" class="btn ghost">Cancelar</button>
+        <span id="add-hint" class="muted add-hint"></span>
+      </form>
+
+      <div id="recent" class="recent hidden"></div>
+
+      <div class="table-wrap">
+        <table class="ports">
+          <thead>
+            <tr>
+              <th class="c-port">Porta</th>
+              <th class="c-url">Endereço Encaminhado</th>
+              <th class="c-proc">Processo em Execução</th>
+              <th class="c-vis">Visibilidade</th>
+              <th class="c-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div id="empty" class="empty hidden">
+          <p><strong>Nenhuma porta encaminhada.</strong></p>
+          <p class="muted">Clique em "Adicionar Porta" para expor um servidor local (ex: localhost:3000) com uma URL pública.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="statusbar">
+    <span id="status-left"></span>
+    <span id="status-right"></span>
+  </footer>
+
+  <div id="modal-root"></div>
+  <div id="toasts" aria-live="polite"></div>
+
+  <script src="icons.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

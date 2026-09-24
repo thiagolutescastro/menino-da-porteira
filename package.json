@@ -1,0 +1,66 @@
+{
+  "name": "hospedar-sistema-local-aberto",
+  "productName": "Hospedar Sistema Local Aberto",
+  "version": "1.0.0",
+  "description": "Interface gráfica para gerenciar túneis do Microsoft Dev Tunnels (devtunnel) no Windows e Linux.",
+  "main": "src/main/main.js",
+  "author": {
+    "name": "Thiago Castro",
+    "email": "thiago.castro@gruposfa.com.br"
+  },
+  "homepage": "https://learn.microsoft.com/azure/developer/dev-tunnels/",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "electron .",
+    "start:mock": "node scripts/run-mock.js",
+    "icon": "node scripts/make-icon.js",
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win nsis --x64 --publish never",
+    "dist:linux": "electron-builder --linux AppImage deb --x64 --publish never",
+    "dist:all": "electron-builder --win nsis --linux AppImage deb --x64 --publish never"
+  },
+  "build": {
+    "appId": "br.com.hospedarsistemalocal.app",
+    "productName": "Hospedar Sistema Local Aberto",
+    "artifactName": "Hospedar-Sistema-Local-Aberto-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Hospedar Sistema Local Aberto"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/icon.png",
+      "category": "Development",
+      "executableName": "hospedar-sistema-local-aberto",
+      "synopsis": "Gerenciador gráfico de Microsoft Dev Tunnels"
+    }
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  }
+}
